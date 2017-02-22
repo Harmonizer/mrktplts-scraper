@@ -1,3 +1,4 @@
+<!--This is a example page, the end result of running 'generate_html.py', feeded by data.yml. A normal run would results in a index_result.html file-->
 <!DOCTYPE html>
 <html>
   <head>
