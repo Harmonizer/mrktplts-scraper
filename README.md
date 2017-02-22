@@ -1,2 +1,2 @@
 # mrktplts-scraper
-Prototyping  web scraper
+Prototyping web scraper

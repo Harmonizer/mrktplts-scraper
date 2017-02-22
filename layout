@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+      <title>{% block title %}{% endblock %} - Mrktplts-scraper result index page</title>
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style type="text/css">
+      .container {
+        max-width: 700px;
+      }
+      h2 {color: red;}
+    </style>
+    <style>
+      div.img {
+		border: 1px solid #ccc;
+      }
+      div.img:hover {
+		border: 1px solid #777;
+      }
+
+      div.img img {
+		width: 100%;
+		height: auto;
+      }
+      div.desc {
+		padding: 4px;
+		text-align: center;
+      }
+      div.price {
+		padding-top: 5px;
+		text-align: center;
+                font-weight:  bold;
+		font-size:  larger;
+		font-stretch:  extra-expanded;
+      }
+      * {
+		box-sizing: border-box;
+      }
+      .responsive {
+		padding: 0 6px;
+		float: left;
+		width: 24.99999%;
+      }
+
+      @media only screen and (max-width: 700px){
+		.responsive {
+			width: 49.99999%;
+			margin: 6px 0;
+		}
+      }
+
+      @media only screen and (max-width: 500px){
+		.responsive {
+			width: 100%;
+		}
+      }
+      .clearfix:after {
+		content: "";
+		display: table;
+		clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      {% block heading %}
+        <h1>{% block page %}{% endblock %}Mrktplts - webscraper Example</h1>
+      {% endblock %}
+      <h2>mrktplts base</h2>
+      <br>
+      {% block content %}{% endblock %}
+      <br>
+      <br>
+      <div class="footer">
+        {% block footer %}
+          <br>
+          <br>
+          <br>
+        {% endblock %}
+	<div class="clearfix"></div>
+
+	<div style="padding:6px;">
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
