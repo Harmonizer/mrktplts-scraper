@@ -1,36 +1,35 @@
+import unicodedata
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
+
 import yaml
-import re
+from bs4 import BeautifulSoup
 
-html = urlopen("http://www.marktplaats.nl/verkopers/15321101.html?view=gv")
-bsObj = BeautifulSoup(html.read(), "html5lib")
+URL = "http://www.marktplaats.nl/verkopers/15321101.html?view=gv"
 
-case_list = {}
-x = 0
 
-for child in bsObj.find("div", {"class":"card-grid"}).findAll("div", {"class":"card card--rich"}):
+def iter_cards(html):
+    soup = BeautifulSoup(html, "html5lib")
+    cards = soup.findAll("div", {"class": "card card--rich"})
 
-    testgeld = child.find("span",{"class":"price-new"}).get_text()
-    geld = str(re.sub(r'[^\x00-\x7F]+',' ', testgeld).strip())
-    pattern = re.compile("^[0-9]")
-    if pattern.match(geld):
-        geld = ''.join(('&euro; ', geld))
+    for i, card in enumerate(cards):
+        money_data = card.find("span", {"class": "price-new"}).get_text()
+        normalized_money_data = unicodedata.normalize("NFKD", money_data)
+        html_money = normalized_money_data.replace('€', '&euro;').strip()
 
-    case = {'price': geld,
-            # remove tracking tags 
-            'link': child.a.attrs['href'].split('?', 1)[0], 
-            'img': ''.join(('http:', child.img.attrs['src'])),
-            'title': child.img.attrs['alt']}
-            
-    idx=''.join(('id_', str(x)))
+        index_string = 'id_{}'.format(i)
+        case = {
+            'price': html_money,
+            'link': card.a.attrs['href'].partition('?')[0],
+            'img': 'http:{}'.format(card.img.attrs['src']),
+            'title': card.img.attrs['alt']
+        }
 
-    case_ids = {idx: case}
-    case_list.update(case_ids)
+        yield (index_string, case)
 
-    x = x+1
 
-cases = {'items' : case_list} 
+if __name__ == '__main__':
+    html = urlopen(URL).read()
+    cards = {'items': dict(iter_cards(html))}
 
-with open('data.yml', 'w') as outfile:
-            yaml.dump(cases, outfile, default_flow_style=False)
+    with open('data.yml', 'w') as outfile:
+        yaml.dump(cards, outfile, default_flow_style=False)
