@@ -1,14 +1,13 @@
 #!/usr/bin/python3.4
-from jinja2 import *
-from jinja2 import Environment, FileSystemLoader
 import yaml
+from jinja2 import Environment, FileSystemLoader
 
 ENV = Environment(loader=FileSystemLoader('./webpage'))
 
 with open('data.yml') as yaml_file:
-        items = yaml.load(yaml_file)
+    items = yaml.load(yaml_file)
 
-#print(items)
+# print(items)
 
 template = ENV.get_template("template")
 
