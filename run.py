@@ -1,15 +1,20 @@
+#!/usr/bin/env python3.7
 import unicodedata
 from urllib.request import urlopen
 
 import yaml
 from bs4 import BeautifulSoup
 
-URL = "http://www.marktplaats.nl/verkopers/15321101.html?view=gv"
+URL = "http://www.marktplaats.nl/verkopers/15321101.html"+"?view=gv"
+YML = 'data.yml'
 
+print("Scraped URL: {}".format(URL))
+print("Ouput: {}".format(YML))
+print("RESULTS:")
 
 def iter_cards(html):
     soup = BeautifulSoup(html, "html5lib")
-    cards = soup.findAll("div", {"class": "card card--rich"})
+    cards = soup.findAll("div", {"class": "mp-Listing-card-flex mp-Listing-card-flex--landscape"})
 
     for i, card in enumerate(cards):
         money_data = card.find("span", {"class": "price-new"}).get_text()
@@ -24,12 +29,12 @@ def iter_cards(html):
             'title': card.img.attrs['alt']
         }
 
-        yield (index_string, case)
+        print(index_string)
 
+        yield (index_string, case)
 
 if __name__ == '__main__':
     html = urlopen(URL).read()
     cards = {'items': dict(iter_cards(html))}
-
-    with open('data.yml', 'w') as outfile:
+    with open(YML, 'w') as outfile:
         yaml.dump(cards, outfile, default_flow_style=False)

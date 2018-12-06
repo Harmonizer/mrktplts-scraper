@@ -2,23 +2,23 @@
 {% block head %}
   {{ super() }}
 {% endblock %}
+
 {% block content %}
-{% set count = 0 %}
-{% for n in config['items'] %}
-  {% set my_string2 = 'id' %}
-  {% set my_string = my_string2 ~ '_' ~ count %}
-  <div class="responsive">
-  <div class="img">
-    <a target="_blank" href="{{ config['items'][ my_string ]['link'] }}">
-      <img src="{{ config['items'][ my_string ]['img'] }}" alt="{{ config['items'][ my_string ]['title'] }}" width="600" height="400">
-    </a>
-    <div class="price">{{config['items'][ my_string ]['price']}}</div>
-    <div class="desc">{{config['items'][ my_string ]['title']}}</div>
-  </div>
+  {% for item in config['items'] %}
+    {% set id = item %}
+
+<div class="responsive">
+ <div class="img">
+    <a target="_blank" href="{{ config['items'][ id ]['link'] }}">
+    <img src="{{ config['items'][ id ]['img'] }}" alt="{{ config['items'][ id ]['title'] }}" width="600" height="400"> </a>
+    <div class="price">{{config['items'][ id ]['price']}}</div>
+    <div class="desc">{{config['items'][ id ]['title']}}</div>
+ </div>
 </div>
-  {% set count = count + 1 %}
-{% endfor %}
+
+  {% endfor %}
+{% endblock %}
+
 {% block footer %}
   {{ super() }}
-{% endblock %}
 {% endblock %}
